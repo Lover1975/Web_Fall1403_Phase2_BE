@@ -21,7 +21,7 @@ spring:
     initialization-mode: never
     initialize: true
     password: admin
-    url: jdbc:postgresql://localhost:5432/web
+    url: jdbc:postgresql://localhost:5433/web
     username: postgres
   jpa:
     hibernate:
@@ -82,3 +82,7 @@ ui-string-const-config:
   edit: "Edit"
 number-const-config:
   reportLimit: 3
+
+server:
+  error:
+    include-message: always
