@@ -13,10 +13,10 @@ public class Category {
 
     @Id
     @Column(name = "category_name", nullable = false)
-    private String categoryName; // Primary key
+    private String categoryName;
 
     @Column(name = "number_of_questions", nullable = false)
-    private int numberOfQuestions; // Number of questions in the category
+    private int numberOfQuestions;
 
     public Category() {}
 
