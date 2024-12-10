@@ -22,7 +22,7 @@ public class ProfileService {
     public ProfileDto getProfile(String username) {
         Person person = personRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        int numberOfDesignedQuestions = questionRepository.findByUsername(username).size();
+        int numberOfDesignedQuestions = questionRepository.findByPerson(person).size();
         int numberOfFollowers = person.getFollowers().size();
         return new ProfileDto(username, numberOfDesignedQuestions, numberOfFollowers);
     }

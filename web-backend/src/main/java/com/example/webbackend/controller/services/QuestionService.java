@@ -3,6 +3,7 @@ package com.example.webbackend.controller.services;
 import com.example.webbackend.repository.CategoryRepository;
 import com.example.webbackend.repository.QuestionRepository;
 import com.example.webbackend.repository.entity.Category;
+import com.example.webbackend.repository.entity.Person;
 import com.example.webbackend.repository.entity.Question;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,11 +22,11 @@ public class QuestionService {
         this.categoryRepository = categoryRepository;
     }
 
-    public List<Question> getQuestionsByUser(String username) {
-        return questionRepository.findByUsername(username);
+    public List<Question> getQuestionsByPerson(Person person) {
+        return questionRepository.findByPerson(person);
     }
 
-    public Question addQuestion(String username, String questionText, String answer1, String answer2,
+    public Question addQuestion(Person person, String questionText, String answer1, String answer2,
                                 String answer3, String answer4, int correctAnswer, int hardness,
                                 String categoryName) {
 
@@ -33,7 +34,7 @@ public class QuestionService {
                 .orElseThrow(() -> new RuntimeException("Category does not exist"));
 
         Question question = new Question();
-        question.setUsername(username);
+        question.setPerson(person);
         question.setQuestion(questionText);
         question.setAnswer1(answer1);
         question.setAnswer2(answer2);
