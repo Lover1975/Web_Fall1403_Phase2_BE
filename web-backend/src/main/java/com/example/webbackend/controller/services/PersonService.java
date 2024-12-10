@@ -2,6 +2,7 @@ package com.example.webbackend.controller.services;
 
 import com.example.webbackend.repository.PersonRepository;
 import com.example.webbackend.repository.entity.Person;
+import com.example.webbackend.repository.entity.enums.PersonType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,10 +18,11 @@ public class PersonService {
     }
 
     @Transactional
-    public Person createPerson(String username, String password) {
+    public Person createPerson(String username, String password, PersonType personType) {
         Person person = new Person();
         person.setUsername(username);
         person.setPassword(password);
+        person.setPersonType(personType);
 
         return personRepository.save(person);
     }

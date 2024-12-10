@@ -4,6 +4,7 @@ import com.example.webbackend.controller.services.PersonService;
 import com.example.webbackend.repository.entity.Person;
 import com.example.webbackend.repository.entity.dtos.ModelMapperInstance;
 import com.example.webbackend.repository.entity.dtos.PersonDto;
+import com.example.webbackend.repository.entity.enums.PersonType;
 import com.example.webbackend.web.BaseResponse;
 import com.example.webbackend.web.ResponseHeader;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,11 +31,12 @@ public class EntryController {
     }
 
     @PostMapping(value = "signup")
-    public BaseResponse signup(@RequestParam String username, @RequestParam String password) {
+    public BaseResponse signup(@RequestParam String username, @RequestParam String password,
+                               @RequestParam String personType) {
         if (personService.existsPersonByUserName(username)) {
             return (new BaseResponse(ResponseHeader.USERNAME_NOT_EXISTS, null));
         }
-        Person person = personService.createPerson(username, password);
+        Person person = personService.createPerson(username, password, PersonType.valueOf(personType));
         PersonDto personDto = ModelMapperInstance.getModelMapper().map(person, PersonDto.class);
         return(new BaseResponse(ResponseHeader.OK, personDto));
     }

@@ -1,5 +1,6 @@
 package com.example.webbackend.repository.entity.dtos;
 
+import com.example.webbackend.repository.entity.enums.PersonType;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -25,6 +26,9 @@ public class PersonDto extends Dto{
 
     @JsonProperty("password")
     private String password;
+
+    @JsonProperty("personType")
+    private PersonType personType;
 
     @Override
     public String toString() {

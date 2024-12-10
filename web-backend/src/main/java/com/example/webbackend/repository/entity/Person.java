@@ -1,5 +1,6 @@
 package com.example.webbackend.repository.entity;
 
+import com.example.webbackend.repository.entity.enums.PersonType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,6 +25,9 @@ public class Person {
 
     @Column
     private String password;
+
+    @Enumerated(EnumType.STRING)
+    private PersonType personType;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
