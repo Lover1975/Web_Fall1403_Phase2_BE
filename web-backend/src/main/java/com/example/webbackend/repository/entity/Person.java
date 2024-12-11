@@ -40,6 +40,17 @@ public class Person {
     @ManyToMany(mappedBy = "followers")
     private Set<Person> following = new HashSet<>();
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "designer")
+    private Set<Question> questions = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "person_answered_questiones",
+            joinColumns = @JoinColumn(name = "person_id"),
+            inverseJoinColumns = @JoinColumn(name = "question_id")
+    )
+    private Set<Question> answeredQuestions = new HashSet<Question>();
+
     // Helper methods for managing followers/following relationships
     public void followPerson(Person personToFollow) {
         personToFollow.getFollowers().add(this);

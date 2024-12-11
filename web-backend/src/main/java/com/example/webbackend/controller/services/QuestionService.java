@@ -22,11 +22,11 @@ public class QuestionService {
         this.categoryRepository = categoryRepository;
     }
 
-    public List<Question> getQuestionsByPerson(Person person) {
-        return questionRepository.findByPerson(person);
+    public List<Question> getQuestionsByPerson(Person designer) {
+        return questionRepository.findByDesigner(designer);
     }
 
-    public Question addQuestion(Person person, String questionText, String answer1, String answer2,
+    public Question addQuestion(Person designer, String questionText, String answer1, String answer2,
                                 String answer3, String answer4, int correctAnswer, int hardness,
                                 String categoryName) {
 
@@ -34,7 +34,7 @@ public class QuestionService {
                 .orElseThrow(() -> new RuntimeException("Category does not exist"));
 
         Question question = new Question();
-        question.setPerson(person);
+        question.setDesigner(designer);
         question.setQuestion(questionText);
         question.setAnswer1(answer1);
         question.setAnswer2(answer2);

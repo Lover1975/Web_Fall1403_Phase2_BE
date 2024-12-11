@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Entity
 @Getter
 @Setter
@@ -14,8 +16,8 @@ public class Question {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "person_id")
-    private Person person;
+    @JoinColumn(name = "designer_id")
+    private Person designer;
 
     @Column(nullable = false)
     private String question;
@@ -38,7 +40,10 @@ public class Question {
     @Column(nullable = false)
     private Integer hardness;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "categoryName", referencedColumnName = "category_name", nullable = false)
     private Category category;
+
+    @ManyToMany(mappedBy = "answeredQuestions", fetch = FetchType.LAZY)
+    private Set<Person> answeredPersons;
 }
