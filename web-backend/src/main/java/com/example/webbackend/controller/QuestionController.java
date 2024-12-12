@@ -4,11 +4,14 @@ import com.example.webbackend.controller.services.PersonService;
 import com.example.webbackend.controller.services.QuestionService;
 import com.example.webbackend.repository.entity.Person;
 import com.example.webbackend.repository.entity.Question;
+import com.example.webbackend.repository.entity.dtos.QuestionDto;
+import com.example.webbackend.repository.entity.dtos.QuestionsDto;
 import com.example.webbackend.web.BaseResponse;
 import com.example.webbackend.web.ResponseHeader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @RestController
@@ -27,13 +30,18 @@ public class QuestionController {
     @GetMapping
     public BaseResponse<List<Question>> getQuestionsByUser(@RequestParam String username) {
         Person person = personService.findPersonByUsername(username);
-        List<Question> questions = questionService.getQuestionsByPerson(person);
-        return new BaseResponse<>(ResponseHeader.OK, questions);
+        List<QuestionDto> questions = new LinkedList<QuestionDto>();
+        for (Question question : questionService.getQuestionsByPerson(person)) {
+            QuestionDto questionDto = new QuestionDto(question.getDesigner().getUsername(), question.getQuestion(), question.getAnswer1(), question.getAnswer2(), question.getAnswer3(), question.getAnswer4(), question.getCategory().getCategoryName());
+            questions.add(questionDto);
+        }
+        QuestionsDto questionsDto = new QuestionsDto(questions);
+        return new BaseResponse<>(ResponseHeader.OK, questionsDto);
     }
 
     @PostMapping
     public BaseResponse<Question> addQuestion(
-            @RequestParam String username,
+            @RequestParam String designer,
             @RequestParam String questionText,
             @RequestParam String answer1,
             @RequestParam String answer2,
@@ -42,9 +50,9 @@ public class QuestionController {
             @RequestParam int correctAnswer,
             @RequestParam int hardness,
             @RequestParam String categoryName) {
-        Person person = personService.findPersonByUsername(username);
+        Person person = personService.findPersonByUsername(designer);
         Question question = questionService.addQuestion(person, questionText, answer1, answer2, answer3, answer4,
                 correctAnswer, hardness, categoryName);
-        return new BaseResponse<>(ResponseHeader.OK, question);
+        return new BaseResponse<>(ResponseHeader.OK, null);
     }
 }

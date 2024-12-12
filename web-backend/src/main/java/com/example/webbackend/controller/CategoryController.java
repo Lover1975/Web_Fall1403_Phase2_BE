@@ -2,6 +2,7 @@ package com.example.webbackend.controller;
 
 import com.example.webbackend.controller.services.CategoryService;
 import com.example.webbackend.repository.entity.Category;
+import com.example.webbackend.repository.entity.dtos.CategoriesDto;
 import com.example.webbackend.repository.entity.dtos.CategoryDto;
 import com.example.webbackend.web.BaseResponse;
 import com.example.webbackend.web.ResponseHeader;
@@ -26,7 +27,8 @@ public class CategoryController {
     @GetMapping("/categories")
     public BaseResponse<List<CategoryDto>> getAllCategories() {
         List<CategoryDto> categories = categoryService.getAllCategories();
-        return new BaseResponse<>(ResponseHeader.OK, categories);
+        CategoriesDto categoriesDto = new CategoriesDto(categories);
+        return new BaseResponse<>(ResponseHeader.OK, categoriesDto);
     }
 
     @PostMapping("/categories")
