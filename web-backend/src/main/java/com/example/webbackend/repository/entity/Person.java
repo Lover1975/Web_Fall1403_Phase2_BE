@@ -26,6 +26,8 @@ public class Person {
     @Column
     private String password;
 
+    @Column Integer score;
+
     @Enumerated(EnumType.STRING)
     private PersonType personType;
 

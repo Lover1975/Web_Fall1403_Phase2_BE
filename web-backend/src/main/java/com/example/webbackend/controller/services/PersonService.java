@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class PersonService {
 
@@ -61,5 +63,9 @@ public class PersonService {
 
     public Person findPersonByUsername(String username) {
         return personRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("Person not found"));
+    }
+
+    public List<Person> findAllPersons() {
+        return personRepository.findAll();
     }
 }
