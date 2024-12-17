@@ -10,6 +10,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class QuestionDto extends Dto{
+    @JsonProperty("id")
+    private Long id;
     @JsonProperty("designer")
     private String designer;
     @JsonProperty("question")

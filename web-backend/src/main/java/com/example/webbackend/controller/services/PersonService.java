@@ -68,4 +68,11 @@ public class PersonService {
     public List<Person> findAllPersons() {
         return personRepository.findAll();
     }
+
+    @Transactional
+    public void addScore(String username, int score) {
+        Person person = findPersonByUsername(username);
+        person.setScore(person.getScore() + score);
+        personRepository.save(person);
+    }
 }

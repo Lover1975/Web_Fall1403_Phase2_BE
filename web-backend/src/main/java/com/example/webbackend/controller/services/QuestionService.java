@@ -34,6 +34,10 @@ public class QuestionService {
         return questionRepository.findByDesigner(designer);
     }
 
+    public Question getQuestionById(Long id) {
+        return questionRepository.findById(id).orElse(null);
+    }
+
     public Question addQuestion(Person designer, String questionText, String answer1, String answer2,
                                 String answer3, String answer4, int correctAnswer, int hardness,
                                 String categoryName) {

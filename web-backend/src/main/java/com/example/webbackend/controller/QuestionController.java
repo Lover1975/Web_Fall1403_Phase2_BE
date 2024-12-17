@@ -6,6 +6,7 @@ import com.example.webbackend.controller.services.QuestionService;
 import com.example.webbackend.repository.entity.Category;
 import com.example.webbackend.repository.entity.Person;
 import com.example.webbackend.repository.entity.Question;
+import com.example.webbackend.repository.entity.dtos.IntegerDto;
 import com.example.webbackend.repository.entity.dtos.QuestionDto;
 import com.example.webbackend.repository.entity.dtos.QuestionsDto;
 import com.example.webbackend.web.BaseResponse;
@@ -36,7 +37,7 @@ public class QuestionController {
         Person person = personService.findPersonByUsername(username);
         List<QuestionDto> questions = new LinkedList<QuestionDto>();
         for (Question question : questionService.getQuestionsByPerson(person)) {
-            QuestionDto questionDto = new QuestionDto(question.getDesigner().getUsername(), question.getQuestion(), question.getAnswer1(), question.getAnswer2(), question.getAnswer3(), question.getAnswer4(), question.getCategory().getCategoryName());
+            QuestionDto questionDto = new QuestionDto(question.getId(),question.getDesigner().getUsername(), question.getQuestion(), question.getAnswer1(), question.getAnswer2(), question.getAnswer3(), question.getAnswer4(), question.getCategory().getCategoryName());
             questions.add(questionDto);
         }
         QuestionsDto questionsDto = new QuestionsDto(questions);
@@ -47,7 +48,7 @@ public class QuestionController {
     public BaseResponse getQuestionSet() {
         List<QuestionDto> questionDtos = new LinkedList<QuestionDto>();
         for (Question question : questionService.findAll()) {
-            QuestionDto questionDto = new QuestionDto(question.getDesigner().getUsername(), question.getQuestion(), question.getAnswer1(), question.getAnswer2(), question.getAnswer3(), question.getAnswer4(), question.getCategory().getCategoryName());
+            QuestionDto questionDto = new QuestionDto(question.getId(), question.getDesigner().getUsername(), question.getQuestion(), question.getAnswer1(), question.getAnswer2(), question.getAnswer3(), question.getAnswer4(), question.getCategory().getCategoryName());
             questionDtos.add(questionDto);
         }
         QuestionsDto questionsDto = new QuestionsDto(questionDtos);
@@ -59,7 +60,7 @@ public class QuestionController {
         Random rand = new Random();
         List<Question> questions = questionService.findAll();
         Question question = questions.get(rand.nextInt(questions.size()));
-        QuestionDto questionDto = new QuestionDto(question.getDesigner().getUsername(), question.getQuestion(), question.getAnswer1(), question.getAnswer2(), question.getAnswer3(), question.getAnswer4(), question.getCategory().getCategoryName());
+        QuestionDto questionDto = new QuestionDto(question.getId(), question.getDesigner().getUsername(), question.getQuestion(), question.getAnswer1(), question.getAnswer2(), question.getAnswer3(), question.getAnswer4(), question.getCategory().getCategoryName());
         return new BaseResponse<>(ResponseHeader.OK, questionDto);
     }
 
@@ -69,7 +70,7 @@ public class QuestionController {
         Random rand = new Random();
         List<Question> questions = questionService.findByCategory(category);
         Question question = questions.get(rand.nextInt(questions.size()));
-        QuestionDto questionDto = new QuestionDto(question.getDesigner().getUsername(), question.getQuestion(), question.getAnswer1(), question.getAnswer2(), question.getAnswer3(), question.getAnswer4(), question.getCategory().getCategoryName());
+        QuestionDto questionDto = new QuestionDto(question.getId(), question.getDesigner().getUsername(), question.getQuestion(), question.getAnswer1(), question.getAnswer2(), question.getAnswer3(), question.getAnswer4(), question.getCategory().getCategoryName());
         return new BaseResponse<>(ResponseHeader.OK, questionDto);
     }
 
@@ -88,5 +89,15 @@ public class QuestionController {
         Question question = questionService.addQuestion(person, questionText, answer1, answer2, answer3, answer4,
                 correctAnswer, hardness, categoryName);
         return new BaseResponse<>(ResponseHeader.OK, null);
+    }
+
+    @PostMapping(value = "answer-question")
+    public BaseResponse<Question> answerQuestion(@RequestParam String username, @RequestParam Long questionId, @RequestParam Integer answer) {
+        Question question = questionService.getQuestionById(questionId);
+        if (question.getCorrectAnswer().intValue() == answer) {
+            personService.addScore(username, question.getHardness());
+        }
+        IntegerDto integerDto = new IntegerDto(question.getCorrectAnswer());
+        return new BaseResponse<>(ResponseHeader.OK, integerDto);
     }
 }

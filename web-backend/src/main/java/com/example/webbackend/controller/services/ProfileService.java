@@ -26,8 +26,7 @@ public class ProfileService {
         int followingCount = person.getFollowing().size();
         int questionCount = questionRepository.findByDesigner(person).size();
         int answeredCount = person.getAnsweredQuestions().size();
-        // TODO: calculate score
-        int score = 0;
+        int score = person.getScore();
         ProfileDto profileDto = new ProfileDto(username, followerCount, followingCount, questionCount, answeredCount, score);
         return profileDto;
     }
