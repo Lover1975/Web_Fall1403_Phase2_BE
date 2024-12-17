@@ -43,4 +43,12 @@ public class CategoryService {
         return modelMapper.map(newCategory, CategoryDto.class);
     }
 
+    public Category getCategory(String categoryName) {
+        Optional<Category> existingCategory = categoryRepository.findByCategoryName(categoryName);
+        if (existingCategory.isPresent()) {
+            return modelMapper.map(existingCategory.get(), Category.class);
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category '" + categoryName + "' not found");
+    }
+
 }

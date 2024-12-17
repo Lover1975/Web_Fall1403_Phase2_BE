@@ -22,6 +22,14 @@ public class QuestionService {
         this.categoryRepository = categoryRepository;
     }
 
+    public List<Question> findAll() {
+        return questionRepository.findAll();
+    }
+
+    public List<Question> findByCategory(Category category) {
+        return questionRepository.findByCategory(category);
+    }
+
     public List<Question> getQuestionsByPerson(Person designer) {
         return questionRepository.findByDesigner(designer);
     }
