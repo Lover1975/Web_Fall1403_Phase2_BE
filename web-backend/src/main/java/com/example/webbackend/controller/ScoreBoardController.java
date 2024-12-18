@@ -7,6 +7,7 @@ import com.example.webbackend.repository.entity.Person;
 import com.example.webbackend.repository.entity.dtos.PersonDto;
 import com.example.webbackend.repository.entity.dtos.ProfileDto;
 import com.example.webbackend.repository.entity.dtos.ProfilesDto;
+import com.example.webbackend.repository.entity.enums.PersonType;
 import com.example.webbackend.web.BaseResponse;
 import com.example.webbackend.web.ResponseHeader;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,8 +38,10 @@ public class ScoreBoardController {
                 .toList();
         List<ProfileDto> top10Dto = new LinkedList<ProfileDto>();
         for (Person person : top10) {
-            ProfileDto profileDto = new ProfileDto(person.getUsername(), person.getFollowersCount(), person.getFollowingCount(), person.getQuestions().size(), person.getAnsweredQuestions().size(), person.getScore());
-            top10Dto.add(profileDto);
+            if (person.getPersonType() != PersonType.DESIGNER) {
+                ProfileDto profileDto = new ProfileDto(person.getId(), person.getUsername(), person.getFollowersCount(), person.getFollowingCount(), person.getQuestions().size(), person.getAnsweredQuestions().size(), person.getScore());
+                top10Dto.add(profileDto);
+            }
         }
         ProfilesDto profilesDto = new ProfilesDto(top10Dto);
         return new BaseResponse<>(ResponseHeader.OK, profilesDto);

@@ -20,14 +20,16 @@ public class ProfileService {
     }
 
     public ProfileDto getProfile(String username) {
+
         Person person = personRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         int followerCount = person.getFollowers().size();
+        long id = person.getId();
         int followingCount = person.getFollowing().size();
         int questionCount = questionRepository.findByDesigner(person).size();
         int answeredCount = person.getAnsweredQuestions().size();
         int score = person.getScore();
-        ProfileDto profileDto = new ProfileDto(username, followerCount, followingCount, questionCount, answeredCount, score);
+        ProfileDto profileDto = new ProfileDto(id, username, followerCount, followingCount, questionCount, answeredCount, score);
         return profileDto;
     }
 }

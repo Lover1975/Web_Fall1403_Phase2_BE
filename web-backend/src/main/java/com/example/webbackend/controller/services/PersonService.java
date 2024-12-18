@@ -25,6 +25,7 @@ public class PersonService {
         person.setUsername(username);
         person.setPassword(password);
         person.setPersonType(personType);
+        person.setScore(0);
 
         return personRepository.save(person);
     }
